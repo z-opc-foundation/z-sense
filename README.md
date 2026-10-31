@@ -3,9 +3,9 @@
 > **敏感识别与分类分级引擎** —— 规则目录 + 可插拔识别器 + 命中定位 + 分类 × 分级。
 > 边界一句话：**只回答「哪里是敏感的、多敏感」，不改内容、不决定脱不脱敏。**
 
-安全线四层能力栈的**底座**（全族依赖它）。同族：`z-mask`（脱敏）· `z-watermark`（水印）· `z-audit`（审计）· `z-biz-security`（编排）。
+安全线四层能力栈的**底座**（全族依赖它）。同族：`z-mask`（脱敏）· `z-watermark`（水印）· `z-audit`（审计）· `z-security`（编排）。
 
-立项文档：lead `002_项目需求/001_特性需求/015_z-biz-security_数据安全线`。
+立项文档：lead `002_项目需求/001_特性需求/015_z-security_数据安全线`。
 
 ## 📋 基本信息
 
@@ -124,7 +124,7 @@ bash ../../.workbuddy/run-all-tests.sh z-sense     # 全 reactor（core + starte
 ## 📌 与同族的关系
 
 ```
-z-biz-security（编排）
+z-security（编排）
    ├─▶ z-sense      detect(text) → SenseResult（命中列表 + 分级）   ← 本仓
    ├─▶ z-mask       按命中位置遮蔽
    ├─▶ z-watermark  打溯源水印

@@ -15,7 +15,7 @@ text ──▶ SenseService.detect(text) ──▶ SenseResult { hits:[{ruleId, 
 |---|---|---|
 | **z-sense** | 规则目录、识别器 SPI、命中定位、分类 × 分级、重叠消解 | 改写文本、脱敏算法、密钥、拦截决策、留痕 |
 | z-mask | 按 z-sense 的命中位置遮蔽 | 识别 |
-| z-biz-security | 编排（要不要拦、走哪条策略） | 识别与遮蔽的实现 |
+| z-security | 编排（要不要拦、走哪条策略） | 识别与遮蔽的实现 |
 
 ## 2. 模块与依赖方向
 
@@ -100,10 +100,10 @@ z-sense/
 |---|---|---|
 | 规则集来源 | 代码内置 | `BuiltinRules`，**不读库**；规则表持久化与热更是 M2 |
 | 版本 | 不发制品 | 坐标 `io.github.yuku123:z-sense:1.0.0`，parent `z-boot-parent:1.2.0`（Java 17 / SB 3.3.13 火车） |
-| DDL | 本仓无 | 本仓不建表；编排侧建表见 z-biz-security `_doc/002_deploy/init.sql` |
+| DDL | 本仓无 | 本仓不建表；编排侧建表见 z-security `_doc/002_deploy/init.sql` |
 
 ## 5. 相关文档
 
 - 复跑与验收读数：[`_doc/005_testing/001_验收复跑.md`](_doc/005_testing/001_验收复跑.md)
 - 端口 / 环境变量 / 启动方式：[`_doc/002_deploy/00-deploy.md`](_doc/002_deploy/00-deploy.md)
-- 立项口径：lead [`002_项目需求/001_特性需求/015_z-biz-security_数据安全线`](../../../z-opc-foundation-lead/002_项目需求/001_特性需求/015_z-biz-security_数据安全线/)
+- 立项口径：lead [`002_项目需求/001_特性需求/015_z-security_数据安全线`](../../../z-opc-foundation-lead/002_项目需求/001_特性需求/015_z-security_数据安全线/)

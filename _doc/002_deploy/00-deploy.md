@@ -2,7 +2,7 @@
 
 ## 1. 运行形态
 
-`z-sense-core` 是纯领域库，编排方（z-biz-security）按 Maven 坐标直接依赖，**不必起进程**——
+`z-sense-core` 是纯领域库，编排方（z-security）按 Maven 坐标直接依赖，**不必起进程**——
 安全线的实际形态就是编排层在自己的请求路径上调 `SenseService`。
 
 `z-sense-web` 提供一层独立可跑的 REST 管控面（`ZSenseWebApplication`）：
@@ -44,7 +44,7 @@ z.base.db.sense.password=
 ## 3. 建表
 
 **本仓无 DDL**：M1 的规则集内置在代码（`support/BuiltinRules`），不读库，因此没有本仓要建的表。
-安全线真正需要建表的是 z-audit（哈希链台账）与 z-biz-security（策略表），
+安全线真正需要建表的是 z-audit（哈希链台账）与 z-security（策略表），
 两者的 `init.sql` 在各自仓的 `_doc/002_deploy/`，属**人工执行动作**，见
 [`_doc/005_testing/001_验收复跑.md`](_doc/005_testing/001_验收复跑.md) §4 的生产执行清单。
 
