@@ -111,6 +111,8 @@ export JAVA_HOME=/Users/zifang/Library/Java/JavaVirtualMachines/corretto-17.0.19
 bash ../../.workbuddy/run-all-tests.sh z-sense     # 全 reactor（core + starter + web）
 ```
 
+> **CI**：push / PR 自动跑 GitHub Actions（`.github/workflows/ci.yml`：JDK 17 + `mvn -B -ntp verify`）。
+
 **22 例全绿**（core 15 + starter 2 + web 5，10 个模块零失败）：
 
 - **core 15**：身份证校验位（对/错）、手机号号段、邮箱、凭据、最高分级、类别分布、
