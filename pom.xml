@@ -57,6 +57,8 @@
 
     <modules>
         <module>z-sense-core</module>
+        <!-- starter = 引擎装配（宿主嵌入用，无 web / 健康检查 / 数据源包袱）；web = 管控面部署。 -->
+        <module>z-sense-starter</module>
         <module>z-sense-web</module>
     </modules>
 
@@ -89,6 +91,11 @@
             <dependency>
                 <groupId>io.github.yuku123</groupId>
                 <artifactId>z-sense-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.yuku123</groupId>
+                <artifactId>z-sense-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

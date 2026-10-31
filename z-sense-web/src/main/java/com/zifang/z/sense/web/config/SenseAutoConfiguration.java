@@ -1,17 +1,21 @@
 package com.zifang.z.sense.web.config;
 
-import com.zifang.z.sense.core.service.SenseService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 /**
- * z-sense自动装配。
+ * z-sense <b>管控面（web）自动装配</b>。
  *
- * <p>宿主引用本仓时，只要把 {@code z-sense-web} 放进 classpath，
- * {@code META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports}
- * 会把本装配挂上 ⇒ 数据源 + 领域服务齐备。
+ * <p><b>只管部署关切</b>：本域数据源 + 健康检查。
+ * <b>引擎装配已拆到 {@code z-sense-starter}</b>（M2 #23）——
+ * {@link com.zifang.z.sense.core.service.SenseService} 由
+ * {@code com.zifang.z.sense.starter.config.SenseStarterAutoConfiguration} 提供，
+ * 本类不再重复定义（重复定义会靠 {@code @ConditionalOnMissingBean} 侥幸让位，但读代码的人会以为有两处真装配）。
+ *
+ * <p>宿主引用本仓时：只想嵌入识别能力 ⇒ 依赖 {@code z-sense-starter}（轻）；
+ * 想跑完整管控面 ⇒ 依赖 {@code z-sense-web}（它传递带上 starter）。
  *
  * <p>⚠️ 本装配**不扫描**包树（无 {@code @ComponentScan}）—— 跨域交互按组织口径走 HTTP 边界，
  * 不把别人的 jar 拖进本仓上下文。
@@ -21,20 +25,6 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import(SenseModuleDataSource.class)
 public class SenseAutoConfiguration {
-
-    /**
-     * 敏感识别服务（**内置规则集**）。
-     *
-     * <p>{@code @ConditionalOnMissingBean} ⇒ 宿主自己装配了同类型 bean 时本仓让位
-     * （比如宿主想用自定义规则集）。
-     *
-     * @return 识别服务
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public SenseService senseService() {
-        return new SenseService();
-    }
 
     /**
      * 本域健康检查（探活用）。

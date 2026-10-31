@@ -27,17 +27,25 @@ z-sense/
 │       ├── spi/       SensitiveDetector（唯一对外扩展点）
 │       ├── service/   SenseService（门面）· RuleSensitiveDetector（规则实现）
 │       └── support/   BuiltinRules（内置规则 + 校验器 + 白/黑名单）
-└── z-sense-web/                  运行壳：数据源 + AutoConfiguration + health + HTTP 面
+├── z-sense-starter/              引擎装配（M2 #23 拆出）：宿主嵌入用，无 web / health / 数据源
+│   └── src/main/
+│       ├── java/com/zifang/z/sense/starter/config/
+│       │                  SenseStarterAutoConfiguration（只装配 SenseService）
+│       └── resources/META-INF/spring/
+│                          org.springframework.boot.autoconfigure.AutoConfiguration.imports
+└── z-sense-web/                  运行壳：数据源 + health + HTTP 面（依赖 starter）
     └── src/main/java/com/zifang/z/sense/web/
-        ├── config/    SenseAutoConfiguration · SenseModuleDataSource · SenseHealthIndicator
+        ├── config/    SenseAutoConfiguration（数据源 + health）· SenseModuleDataSource · SenseHealthIndicator
         └── api/       SenseController（/z-team/api/sense/detect）· SenseHealthController（/api/sense/health）
 ```
 
-三条硬约束：
+四条硬约束：
 
 1. `z-sense-core` **不依赖任何同族仓**，也不依赖 Spring —— 底座方向：z-mask 依赖本仓，反向不依赖；
 2. 对外扩展只走 `spi/SensitiveDetector` 一个口子 —— 换识别实现（如 NER 模型）不需要改门面；
-3. `z-sense-web` 只做装配与暴露，**不放业务逻辑** —— 保证 core 的 15 例单测就是全量口径证明。
+3. `z-sense-web` 只做装配与暴露，**不放业务逻辑** —— 保证 core 的单测就是全量口径证明；
+4. **引擎装配只有一处**（在 starter）：`z-sense-web` 不重复定义 `SenseService`，
+   靠依赖 starter 拿到它 —— 重复定义会靠 `@ConditionalOnMissingBean` 侥幸让位，但读代码的人会以为有两处真装配。
 
 包名 `com.zifang.z.sense.*` 与 Maven groupId `io.github.yuku123` 刻意解耦（照 z-cognition 先例）。
 

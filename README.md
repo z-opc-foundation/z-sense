@@ -87,22 +87,37 @@ z-sense/
 │       ├── spi/         SensitiveDetector（可插拔识别器）
 │       ├── service/     SenseService（门面）· RuleSensitiveDetector（规则实现）
 │       └── support/     BuiltinRules（9 条内置规则 + 校验器 + 白黑名单）
-└── z-sense-web/
+├── z-sense-starter/          ← M2 #23 拆出：宿主嵌入用（无 web / 健康检查 / 数据源包袱）
+│   └── src/main/
+│       ├── java/com/zifang/z/sense/starter/config/
+│       │                  SenseStarterAutoConfiguration（只装配引擎）
+│       └── resources/META-INF/spring/
+│                          org.springframework.boot.autoconfigure.AutoConfiguration.imports
+└── z-sense-web/              ← 管控面部署（传递依赖 starter）
     └── src/main/java/com/zifang/z/sense/web/
-        ├── config/      SenseAutoConfiguration · SenseModuleDataSource · SenseHealthIndicator
-        └── api/         SenseHealthController
+        ├── config/      SenseAutoConfiguration（数据源 + 健康检查）· SenseModuleDataSource · SenseHealthIndicator
+        └── api/         SenseController（/z-team/api/sense/detect）· SenseHealthController
 ```
+
+> **starter 与 web 的分工（M2 #23）**：早先引擎装配长在 web 里 ⇒ 宿主要嵌入识别能力就得连
+> `spring-boot-starter-web`、健康检查、`z-boot-datasource-starter`（druid + mybatis + mysql 驱动）一起拖进来。
+> 拆分后：**只想嵌入引擎 ⇒ 依赖 `z-sense-starter`（轻）；要跑管控面 ⇒ 依赖 `z-sense-web`（传递带 starter）**。
 
 ## 🧪 测试
 
 ```bash
 # ⚠ 必须用 JDK 17（本机默认 JDK 23 会让 Groovy 读不懂 class major 67 ⇒ 假红）
 export JAVA_HOME=/Users/zifang/Library/Java/JavaVirtualMachines/corretto-17.0.19/Contents/Home
-mvn -f z-sense-core/pom.xml test
+bash ../../.workbuddy/run-all-tests.sh z-sense     # 全 reactor（core + starter + web）
 ```
 
-**15 例全绿**：身份证校验位（对/错）、手机号号段、邮箱、凭据、最高分级、类别分布、
-空输入、普通文本不误伤、阈值判定、幂等、位置回切。
+**22 例全绿**（core 15 + starter 2 + web 5，10 个模块零失败）：
+
+- **core 15**：身份证校验位（对/错）、手机号号段、邮箱、凭据、最高分级、类别分布、
+  空输入、普通文本不误伤、阈值判定、幂等、位置回切。
+- **starter 2**（M2 #23 新增）：宿主只放 starter jar（`com.example.embedhost` 包树，**组件扫描扫不到装配类**）
+  ⇒ 引擎经 imports 机制自动装配；imports 文件每一行逐行验类存在（**抓得住包名斜杠笔误**）。
+- **web 5**：REST 端点可路由 + 健康检查。
 
 ## 📌 与同族的关系
 
