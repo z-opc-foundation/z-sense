@@ -13,7 +13,7 @@
 |---|---|
 | 层 | L3 能力仓（可被 Maven Central 口径消费；**本轮不发制品**） |
 | 坐标 | `io.github.yuku123:z-sense`，版本 `1.0.0` |
-| parent | `io.github.yuku123:z-boot-parent:1.2.1`（Java 17 / Spring Boot 3.3.13 火车） |
+| parent | `io.github.yuku123:z-boot-parent:1.2.2`（Java 17 / Spring Boot 3.3.13 火车） |
 | 包名 | `com.zifang.z.sense.core.*`（groupId 与包名 namespace 解耦，照 z-cognition 先例） |
 | 端口 | 8094 |
 | 模块 | `z-sense-core`（领域模型 + 领域服务 + SPI）· `z-sense-web`（数据源 + health + AutoConfiguration） |
