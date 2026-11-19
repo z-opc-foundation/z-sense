@@ -1,5 +1,6 @@
 package com.zifang.z.sense.web.api;
 
+import com.zifang.z.meta.api.annotation.BizApi;
 import com.zifang.z.sense.web.config.SenseHealthIndicator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class SenseHealthController {
      * @return 健康信息
      */
     @GetMapping("/health")
+    @BizApi(summary = "健康检查", description = "健康检查。", tags = { "z-sense" })
     public Map<String, Object> health() {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("component", healthIndicator.getComponent());
@@ -36,3 +38,6 @@ public class SenseHealthController {
         return body;
     }
 }
+
+
+

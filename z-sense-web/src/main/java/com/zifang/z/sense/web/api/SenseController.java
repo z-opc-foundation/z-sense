@@ -1,5 +1,8 @@
 package com.zifang.z.sense.web.api;
 
+import com.zifang.z.meta.api.annotation.BizApi;
+import com.zifang.z.meta.api.annotation.BizField;
+import com.zifang.z.meta.api.annotation.BizParam;
 import com.zifang.z.sense.core.domain.SenseResult;
 import com.zifang.z.sense.core.domain.SensitiveHit;
 import com.zifang.z.sense.core.domain.SensitiveLevel;
@@ -48,7 +51,8 @@ public class SenseController {
      * @return 命中明细
      */
     @PostMapping("/detect")
-    public ResponseEntity<Map<String, Object>> detect(@RequestBody DetectRequest request) {
+    @BizApi(summary = "识别一段文本里的敏感数据", description = "识别一段文本里的敏感数据。", tags = { "z-sense" })
+    public ResponseEntity<Map<String, Object>> detect(@RequestBody @BizParam(name = "request", type = BizField.FieldType.STRING, description = "请求体", position = BizParam.Position.BODY) DetectRequest request) {
         SenseService service = senseServiceProvider.getIfAvailable();
         if (service == null) {
             return ResponseEntity.status(503).body(error("识别服务未装配"));
@@ -108,3 +112,6 @@ public class SenseController {
         }
     }
 }
+
+
+
